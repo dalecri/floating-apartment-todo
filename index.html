@@ -29,54 +29,53 @@ body::after{
   --bar-bot: max(28px, env(safe-area-inset-bottom, 28px));
 }
 
-#time-badge{
-  position:fixed;top:16px;left:50%;transform:translateX(-50%);
-  background:rgba(255,255,255,.14);backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);
-  border:1px solid rgba(255,255,255,.28);border-radius:16px;
-  padding:5px 14px;font-size:10px;color:rgba(255,255,255,.8);
-  pointer-events:none;letter-spacing:.05em;
-  white-space:nowrap;font-family:var(--mono);
-  max-width:calc(100vw - 120px);overflow:hidden;text-overflow:ellipsis;text-align:center;
-  box-shadow:0 4px 14px rgba(0,0,0,.08);
-  text-shadow:0 1px 3px rgba(0,0,0,.25);
-  z-index:899;
-}
-
-#settings-fab{
-  position:fixed;top:14px;right:16px;z-index:901;
-  width:44px;height:44px;flex-shrink:0;
+#top-controls{
+  position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:901;
+  display:flex;align-items:center;gap:2px;padding:4px;
   background:rgba(255,255,255,.2);
   backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);
   border:1px solid rgba(255,255,255,.4);
-  color:rgba(60,48,42,.7);cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  border-radius:50%;
+  border-radius:50px;
   box-shadow:var(--g-shadow), inset 0 0 20px rgba(255,255,255,.08);
-  transition:color .12s,background .12s,transform .1s;
-  -webkit-tap-highlight-color:transparent;
 }
-#settings-fab:hover{color:rgba(60,48,42,.95);background:rgba(255,255,255,.32)}
-#settings-fab:active{background:rgba(255,255,255,.4);transform:scale(.92)}
-#settings-fab.active{color:#e2935a;background:rgba(255,255,255,.28)}
+#top-controls .tc-divider{width:1px;height:22px;background:rgba(60,48,42,.15);flex-shrink:0}
 
 #todo-panel{
   position:fixed;z-index:901;
-  left:50%;transform:translateX(-50%) translateY(0);
+  top:50%;left:50%;transform:translate(-50%,-50%) scale(1);
   width:var(--bar-w);
   transition:opacity .18s ease-out, transform .18s ease-out;
-  transform-origin:bottom center;
-  bottom:calc(var(--bar-bot) + 66px);
-  max-height:min(400px,52vh);
-  display:flex;flex-direction:column;gap:12px;
-  background:none;border:none;padding:0;
+  transform-origin:center center;
+  max-height:min(460px,58vh);
+  background:rgba(252,251,249,.97);
+  backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);
+  border:1px solid rgba(255,255,255,.6);
+  border-radius:28px;
+  box-shadow:0 24px 60px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.8);
+  display:flex;flex-direction:column;
+  padding:22px 22px 16px;
+  overflow:hidden;
 }
-#todo-panel.hidden{opacity:0;pointer-events:none;transform:translateX(-50%) translateY(10px)}
+#todo-panel.hidden{opacity:0;pointer-events:none;transform:translate(-50%,-50%) scale(.97)}
+.tp-header{flex-shrink:0;padding-bottom:14px;margin-bottom:6px;border-bottom:1px solid rgba(40,32,28,.1)}
+.tp-title{font-family:var(--mono);font-size:19px;font-weight:700;color:rgba(30,24,20,.92);margin-bottom:6px}
+.tp-sub{display:flex;align-items:center;justify-content:space-between;font-family:var(--mono);font-size:12px;color:rgba(40,32,28,.5)}
+.tp-count{font-size:12px;color:rgba(40,32,28,.45)}
+.tp-add{
+  flex-shrink:0;margin-top:12px;width:100%;padding:12px;
+  border-radius:50px;border:1.5px dashed rgba(40,32,28,.25);
+  background:none;color:rgba(40,32,28,.55);
+  font-family:var(--mono);font-size:12px;letter-spacing:.03em;
+  cursor:pointer;transition:background .12s,border-color .12s,color .12s;
+  -webkit-tap-highlight-color:transparent;
+}
+.tp-add:hover{background:rgba(40,32,28,.05);border-color:rgba(40,32,28,.4);color:rgba(40,32,28,.8)}
 
 #amb-panel{
   position:fixed;z-index:900;
-  top:66px;right:16px;
-  transform-origin:top right;
-  transform:translateY(0) scale(1);
+  top:70px;left:50%;
+  transform-origin:top center;
+  transform:translateX(-50%) translateY(0) scale(1);
   width:min(300px,calc(100vw - 32px));
   transition:opacity .16s ease-out, transform .16s ease-out;
   background:rgba(255,255,255,.14);
@@ -88,7 +87,7 @@ body::after{
 }
 #amb-panel.hidden{
   opacity:0;pointer-events:none;
-  transform:translateY(-8px) scale(.98);
+  transform:translateX(-50%) translateY(-8px) scale(.98);
 }
 #amb-panel .ap-head,#amb-panel #ap-rows{
   transition:opacity .15s ease .12s;
@@ -139,48 +138,43 @@ body::after{
 .ap-reset:hover{background:rgba(255,255,255,.28);color:#fff}
 .ap-reset:active{transform:rotate(-90deg)}
 
-#todo-list{overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:8px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.3) transparent;-webkit-overflow-scrolling:touch;padding-right:2px}
+#todo-list{overflow-y:auto;flex:1;display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:rgba(40,32,28,.2) transparent;-webkit-overflow-scrolling:touch}
 .td-item{
-  display:flex;align-items:center;gap:14px;padding:14px 20px;
-  border-radius:50px;cursor:pointer;
-  background:rgba(255,255,255,.22);
-  backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);
-  border:1px solid rgba(255,255,255,.4);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.5), 0 4px 18px rgba(0,0,0,.08);
-  transition:background .2s,transform .2s;
+  display:flex;align-items:center;gap:14px;padding:16px 2px;
+  cursor:pointer;
+  border-bottom:1px solid rgba(40,32,28,.08);
+  transition:background .15s;
   -webkit-tap-highlight-color:transparent;
 }
-.td-item:hover{background:rgba(255,255,255,.32);transform:translateX(2px)}
-.td-item.done{opacity:.5}
+.td-item:last-child{border-bottom:none}
+.td-item:hover{background:rgba(40,32,28,.04)}
+.td-item.done{opacity:.55}
 .td-item.done .td-text{text-decoration:line-through}
 .td-check{
-  width:20px;height:20px;border-radius:50%;
-  border:2px solid rgba(255,255,255,.55);
+  order:2;width:22px;height:22px;border-radius:50%;
+  border:2px solid rgba(40,32,28,.22);
   flex-shrink:0;display:flex;align-items:center;justify-content:center;
-  transition:all .22s;color:#fff;font-size:11px;
+  transition:all .22s;color:#fff;font-size:12px;
 }
 .td-item.done .td-check{background:var(--g-accent);border-color:var(--g-accent);color:#fff}
-.td-text{font-family:var(--mono);font-size:12px;color:rgba(40,32,28,.9);flex:1;word-break:break-word;line-height:1.4;text-shadow:0 1px 2px rgba(255,255,255,.35)}
-.td-body{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0}
-.td-date{font-family:var(--mono);font-size:10px;color:rgba(40,32,28,.55);letter-spacing:.02em}
-.td-del{background:none;border:none;color:rgba(40,32,28,.35);font-size:15px;cursor:pointer;padding:3px 5px;flex-shrink:0;transition:color .12s;-webkit-tap-highlight-color:transparent}
-.td-del:hover,.td-del:active{color:rgba(220,80,80,.9)}
+.td-text{font-family:var(--mono);font-size:14px;font-weight:600;color:rgba(30,24,20,.9);flex:1;word-break:break-word;line-height:1.4}
+.td-body{order:1;display:flex;flex-direction:column;gap:3px;flex:1;min-width:0}
+.td-date{font-family:var(--mono);font-size:11px;color:rgba(40,32,28,.45);letter-spacing:.01em}
+.td-del{order:3;background:none;border:none;color:rgba(40,32,28,.3);font-size:16px;cursor:pointer;padding:3px 5px;flex-shrink:0;transition:color .12s;-webkit-tap-highlight-color:transparent}
+.td-del:hover,.td-del:active{color:rgba(200,60,60,.9)}
 #td-empty{
-  font-family:var(--mono);font-size:12px;color:rgba(255,255,255,.7);
-  text-align:center;padding:22px 16px;letter-spacing:.02em;line-height:1.5;
-  background:rgba(255,255,255,.12);border:1px dashed rgba(255,255,255,.35);border-radius:24px;
-  text-shadow:0 1px 3px rgba(0,0,0,.15);
+  font-family:var(--mono);font-size:12px;color:rgba(40,32,28,.55);
+  text-align:center;padding:26px 16px;letter-spacing:.02em;line-height:1.5;
 }
 .td-completed-toggle{
   display:flex;align-items:center;justify-content:space-between;
-  padding:9px 20px;margin-top:2px;border-radius:50px;cursor:pointer;
-  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);
-  font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;
-  color:rgba(255,255,255,.75);transition:background .12s,color .12s;
-  text-shadow:0 1px 2px rgba(0,0,0,.15);
+  padding:11px 2px;cursor:pointer;
+  border-bottom:1px solid rgba(40,32,28,.08);
+  font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;
+  color:rgba(40,32,28,.5);transition:color .12s;
   -webkit-tap-highlight-color:transparent;
 }
-.td-completed-toggle:hover{background:rgba(255,255,255,.18);color:#fff}
+.td-completed-toggle:hover{color:rgba(40,32,28,.85)}
 .td-chevron{font-size:8px}
 
 #task-bar{
@@ -197,28 +191,20 @@ body::after{
   height:56px;padding:0 6px;
   z-index:900;
 }
-#eye-fab{
-  position:fixed;bottom:var(--bar-bot);left:16px;z-index:900;
-}
-#todo-fab{
-  position:fixed;bottom:var(--bar-bot);right:16px;z-index:900;
-}
-#todo-fab,#eye-fab{
-  flex-shrink:0;width:52px;height:52px;
-  background:rgba(255,255,255,.2);
-  backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);
-  border:1px solid rgba(255,255,255,.4);
+#settings-fab,#top-controls #todo-fab,#top-controls #eye-fab{
+  width:44px;height:44px;flex-shrink:0;
+  background:none;border:none;
   color:rgba(60,48,42,.7);cursor:pointer;
   display:flex;align-items:center;justify-content:center;
   border-radius:50%;
-  box-shadow:var(--g-shadow), inset 0 0 20px rgba(255,255,255,.08);
-  transition:color .12s,background .12s,transform .12s;
+  transition:color .12s,background .12s,transform .1s;
   -webkit-tap-highlight-color:transparent;
 }
-#todo-fab:hover,#eye-fab:hover{color:rgba(60,48,42,.95);background:rgba(255,255,255,.32)}
-#todo-fab:active,#eye-fab:active{background:rgba(255,255,255,.4);transform:scale(.94)}
-#eye-fab.active{color:#e2935a;background:rgba(255,255,255,.28)}
+#settings-fab:hover,#top-controls #todo-fab:hover,#top-controls #eye-fab:hover{color:rgba(60,48,42,.95);background:rgba(255,255,255,.32)}
+#settings-fab:active,#top-controls #todo-fab:active,#top-controls #eye-fab:active{background:rgba(255,255,255,.4);transform:scale(.92)}
+#settings-fab.active,#eye-fab.active{color:#e2935a;background:rgba(255,255,255,.28)}
 #eye-fab.active:hover{color:#f0a86e}
+.tb-icon{font-size:16px;flex-shrink:0;margin-left:16px;margin-right:2px}
 #task-input{
   flex:1;height:100%;background:none;border:none;outline:none;
   font-family:var(--mono);font-size:14px;
@@ -254,16 +240,13 @@ body::after{
   #task-bar{height:52px;border-radius:26px;padding:0 4px;width:calc(100vw - 140px);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
   #task-input{font-size:16px;padding:0 10px}
   #task-submit{display:flex}
-  #todo-fab,#eye-fab{width:48px;height:48px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-  #eye-fab{left:12px}
-  #todo-fab{right:12px}
-  #settings-fab{top:12px;right:12px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-  #amb-panel{top:62px;right:12px;width:calc(100vw - 24px);padding:14px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+  #top-controls{top:12px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+  #settings-fab,#top-controls #todo-fab,#top-controls #eye-fab{width:40px;height:40px}
+  #amb-panel{top:64px;width:calc(100vw - 24px);padding:14px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
   #todo-panel{width:calc(100vw - 24px);max-height:min(320px,52vh)}
-  .td-item{padding:12px 14px}
+  .td-item{padding:14px 2px}
   .td-check{width:22px;height:22px}
   .td-text{font-size:13px}
-  #time-badge{font-size:9px;padding:5px 12px;max-width:calc(100vw - 140px);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 }
 
 #lamp-tooltip{
@@ -330,14 +313,28 @@ body::after{
 <svg id="label-lines"></svg>
 <div id="lightning-flash"></div>
 <div id="lamp-tooltip" class="hidden"></div>
-<div id="time-badge">Day</div>
-<button id="settings-fab" title="Ambience settings">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <line x1="4" y1="6" x2="20" y2="6"/><circle cx="14" cy="6" r="2" fill="currentColor" stroke="none"/>
-    <line x1="4" y1="12" x2="20" y2="12"/><circle cx="8" cy="12" r="2" fill="currentColor" stroke="none"/>
-    <line x1="4" y1="18" x2="20" y2="18"/><circle cx="16" cy="18" r="2" fill="currentColor" stroke="none"/>
-  </svg>
-</button>
+<div id="top-controls">
+  <button id="settings-fab" title="Ambience settings">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="4" y1="6" x2="20" y2="6"/><circle cx="14" cy="6" r="2" fill="currentColor" stroke="none"/>
+      <line x1="4" y1="12" x2="20" y2="12"/><circle cx="8" cy="12" r="2" fill="currentColor" stroke="none"/>
+      <line x1="4" y1="18" x2="20" y2="18"/><circle cx="16" cy="18" r="2" fill="currentColor" stroke="none"/>
+    </svg>
+  </button>
+  <div class="tc-divider"></div>
+  <button id="eye-fab" title="Show all apartment labels">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/>
+      <line id="eye-slash" x1="3" y1="3" x2="21" y2="21" style="display:none"/>
+    </svg>
+  </button>
+  <div class="tc-divider"></div>
+  <button id="todo-fab" title="Tasks">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2 12l5 5L22 4"/><path d="M2 19l5 5L22 11" opacity=".45"/>
+    </svg>
+  </button>
+</div>
 <div id="amb-panel" class="hidden">
   <div class="ap-head">
     <span class="ap-title">Sky Conditions</span>
@@ -351,9 +348,20 @@ body::after{
   <div id="ap-rows"></div>
 </div>
 
-<div id="todo-panel" class="hidden"><div id="todo-list"></div></div>
+<div id="todo-panel" class="hidden">
+  <div class="tp-header">
+    <div class="tp-title">My Tenants</div>
+    <div class="tp-sub">
+      <span>📅 <span id="tp-date-text"></span></span>
+      <span class="tp-count" id="tp-count"></span>
+    </div>
+  </div>
+  <div id="todo-list"></div>
+  <button class="tp-add" id="tp-add">+ Add Tenant</button>
+</div>
 
 <div id="task-bar">
+  <span class="tb-icon">🏠</span>
   <input id="task-input" type="text" placeholder="move a new tenant in..." maxlength="120" autocomplete="off" spellcheck="false">
   <button id="task-submit" title="Add task">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -361,17 +369,6 @@ body::after{
     </svg>
   </button>
 </div>
-<button id="eye-fab" title="Show all apartment labels">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/>
-    <line id="eye-slash" x1="3" y1="3" x2="21" y2="21" style="display:none"/>
-  </svg>
-</button>
-<button id="todo-fab" title="Tasks">
-  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M2 12l5 5L22 4"/><path d="M2 19l5 5L22 11" opacity=".45"/>
-  </svg>
-</button>
 
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/controls/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/"}}</script>
 <script type="module">
@@ -1085,20 +1082,6 @@ function applyTime(){
   if(ambPanel) ambPanel.style.background = panelBg;
   const taskBar = document.getElementById('task-bar');
   if(taskBar) taskBar.style.background = barBg;
-
-  const itemAlpha = (0.18 + night*0.12).toFixed(2);
-  const tdStyle = document.getElementById('td-item-style') || (()=>{
-    const el=document.createElement('style'); el.id='td-item-style'; document.head.appendChild(el); return el;
-  })();
-  tdStyle.textContent = `.td-item{background:rgba(255,255,255,${itemAlpha}) !important}`;
-
-  const badge = document.getElementById('time-badge');
-  if(badge){
-    const ts = now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-    const tzShort = now.toLocaleTimeString([],{timeZoneName:'short'}).split(' ').pop();
-    const dateStr = now.toLocaleDateString([],{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-    badge.textContent = dateStr+' · '+ts+' · '+tzShort;
-  }
 }
 
 // == Ambience panel ==
@@ -1268,6 +1251,12 @@ function createTodoItem(t, i){
 }
 
 function renderTodos(){
+  const dateEl = document.getElementById('tp-date-text');
+  if(dateEl) dateEl.textContent = new Date().toLocaleDateString([],{weekday:'short',month:'short',day:'numeric'});
+  const activeCount = todos.filter(t=>!t.done).length;
+  const countEl = document.getElementById('tp-count');
+  if(countEl) countEl.textContent = activeCount + (activeCount===1 ? ' tenant' : ' tenants');
+
   const list = document.getElementById('todo-list');
   list.innerHTML = '';
   if(todos.length === 0){
@@ -1332,6 +1321,11 @@ todoFab.addEventListener('click', e=>{
   panel.classList.add('hidden');
   fab.classList.remove('active');
   if(opening) todoPanel.classList.remove('hidden');
+});
+document.getElementById('tp-add').addEventListener('click', e=>{
+  e.stopPropagation();
+  todoPanel.classList.add('hidden');
+  taskInput.focus();
 });
 
 document.addEventListener('click', ()=>{
