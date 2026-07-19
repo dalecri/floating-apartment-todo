@@ -73,7 +73,7 @@ body::after{
 
 #amb-panel{
   position:fixed;z-index:900;
-  top:70px;left:50%;
+  top:88px;left:50%;
   transform-origin:top center;
   transform:translateX(-50%) translateY(0) scale(1);
   width:min(300px,calc(100vw - 32px));
@@ -243,7 +243,7 @@ body::after{
   #task-submit{display:flex}
   #top-controls{top:12px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
   #settings-fab,#top-controls #todo-fab,#top-controls #eye-fab{width:40px;height:40px}
-  #amb-panel{top:64px;width:calc(100vw - 24px);padding:14px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+  #amb-panel{top:78px;width:calc(100vw - 24px);padding:14px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
   #todo-panel{width:calc(100vw - 24px);max-height:min(320px,52vh)}
   .td-item{padding:14px 2px}
   .td-check{width:22px;height:22px}
@@ -750,6 +750,8 @@ function buildPersistentLabels(){
 const LABEL_MIN_GAP = 168;   // min horizontal spacing between label centers (matches CSS max-width + margin)
 const LABEL_ROW_BAND = 26;   // anchors within this many px of vertical distance are treated as the same row
 const labelLinesSvg = document.getElementById('label-lines');
+const topControlsEl = document.getElementById('top-controls');
+const ambPanelEl = document.getElementById('amb-panel');
 
 function updatePersistentLabelPositions(){
   if(!labelsAlwaysOn || persistentLabels.length===0){
@@ -757,6 +759,16 @@ function updatePersistentLabelPositions(){
     return;
   }
   const v = new THREE.Vector3();
+
+  // Keep labels clear of the settings pill (and the ambience panel, when open) -
+  // whichever currently occupies more vertical space at the top of the screen.
+  let minLabelY = 70;
+  if(topControlsEl){
+    minLabelY = Math.max(minLabelY, topControlsEl.getBoundingClientRect().bottom + 14);
+  }
+  if(ambPanelEl && !ambPanelEl.classList.contains('hidden')){
+    minLabelY = Math.max(minLabelY, ambPanelEl.getBoundingClientRect().bottom + 14);
+  }
 
   // 1. Project every label's real anchor point in screen space.
   const visible = [];
@@ -805,7 +817,7 @@ function updatePersistentLabelPositions(){
     startX = Math.max(90, Math.min(innerWidth-90, startX));
     items.forEach((item,i)=>{
       const labelX = Math.max(90, Math.min(innerWidth-90, startX + i*LABEL_MIN_GAP));
-      const labelY = row.y - 34; // float labels just above their row of windows
+      const labelY = Math.max(minLabelY, row.y - 34); // float labels just above their row of windows, but never over settings
       item.el.style.left = labelX+'px';
       item.el.style.top  = labelY+'px';
       item.labelX = labelX; item.labelY = labelY;
